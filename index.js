@@ -120,7 +120,13 @@ exports.appHandler = function(appHandle) {
                 context.fail(err);
             } else {
                 var contentType = res.getHeader('content-type');
-                var payload = res.output[1].toString('base64');
+
+                // defensive test of output since this might be some other object type
+                var output = res.output[1];
+                var payload = '';
+                if (output && output.toString) {
+                    payload = output.toString('base64');
+                }
 
                 var lambdaResponse = {payload: payload, contentType: contentType};
                 for (var i=0, l=responseHeaders.length; i<l; i++) {
