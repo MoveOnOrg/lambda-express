@@ -116,6 +116,10 @@ exports.appHandler = function(appHandle) {
             var statusCode = res.statusCode;
 
             if (statusCode > 399) {
+                console.log('error status returned to lambda-express', statusCode);
+                if (res.output) {
+                  console.log('error status returned to lambda-express output', res.output);
+                }
                 var err = new Error(statusCode);
                 context.fail(err);
             } else {
